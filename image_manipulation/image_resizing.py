@@ -2,8 +2,6 @@ import os
 from glob import glob
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 class ImageResizer:
 
@@ -51,15 +49,5 @@ class ImageResizer:
 
 
 resizer = ImageResizer()
-ims = resizer.get_batch(glob(os.path.join('../data/img_align_celeba', '*.jpg'))[:1], 56, 56)
-# print(ims.shape)
-# ims.shape = [1, 56, 56]
-# print(ims.shape)
-
-ims = ims[0]
-print(ims / 255)
-plt.imshow((ims * 255).astype(np.uint8))
-plt.show()
-print('e')
 
 
