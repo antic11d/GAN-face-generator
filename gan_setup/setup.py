@@ -114,15 +114,9 @@ def show_generator_output(sess, n_images, input_z, out_channel_dim, step, epoch)
 
 
 def train(epoch_count, batch_size, z_dim, learning_rate, beta1, get_batches, data_shape):
-    d_logits_real = np.array([])
-    d_logits_fake = np.array([])
-
     input_real, input_z, _ = model_inputs(data_shape[1], data_shape[2], data_shape[3], z_dim)
     d_loss, g_loss, d_logits_r, d_logits_f = model_loss(input_real, input_z, data_shape[3])
     d_opt, g_opt = model_opt(d_loss, g_loss, learning_rate, beta1)
-
-    d_logits_real = np.append(d_logits_real, d_logits_r)
-    d_logits_fake = np.append(d_logits_fake, d_logits_f)
 
     discriminator_loss = np.array([])
     generator_loss = np.array([])
@@ -148,10 +142,6 @@ def train(epoch_count, batch_size, z_dim, learning_rate, beta1, get_batches, dat
                     train_loss_d = d_loss.eval({input_z: batch_z, input_real: batch_images})
                     train_loss_g = g_loss.eval({input_z: batch_z})
 
-                    logit_r = d_logits_r.eval({input_z: batch_z, input_real: batch_images})
-
-                    d_logits_real = np.append(d_logits_real, logit_r)
-
                     discriminator_loss = np.append(discriminator_loss, train_loss_d)
                     generator_loss = np.append(generator_loss, train_loss_g)
 
@@ -176,7 +166,7 @@ def train(epoch_count, batch_size, z_dim, learning_rate, beta1, get_batches, dat
         save_path = saver.save(sess, f'../models/m_final/m_final.ckpt')
         print(f'Saving final model on path {save_path}')
 
-    return discriminator_loss, generator_loss, d_logits_real, d_logits_fake
+    return discriminator_loss, generator_loss
 
 batch_size = 16
 z_dim = 100
@@ -185,7 +175,7 @@ beta1 = 0.5
 epochs = 8
 
 with tf.Graph().as_default():
-    desc_loss, gen_loss, d_logits_real, d_logits_fake = \
+    desc_loss, gen_loss = \
         train(epochs, batch_size, z_dim, learning_rate, beta1, image_resizing.resizer.get_batches,
           image_resizing.resizer.shape)
 
