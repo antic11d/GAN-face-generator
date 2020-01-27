@@ -1,0 +1,5 @@
+model_checkpoint_path: "m_4.ckpt"
+all_model_checkpoint_paths: "../m_1/m_1.ckpt"
+all_model_checkpoint_paths: "../m_2/m_2.ckpt"
+all_model_checkpoint_paths: "../m_3/m_3.ckpt"
+all_model_checkpoint_paths: "m_4.ckpt"
